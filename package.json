@@ -1,0 +1,20 @@
+{
+  "name": "settle-keys",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A business account on NEAR where every person gets a key with a limit.",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.9",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "near:setup": "pnpm --filter settle-keys-scripts run setup",
+    "near:member": "pnpm --filter settle-keys-scripts run member",
+    "near:pay": "pnpm --filter settle-keys-scripts run pay",
+    "near:remove": "pnpm --filter settle-keys-scripts run remove",
+    "near:ledger": "pnpm --filter settle-keys-scripts run ledger",
+    "near:usdc-direct": "pnpm --filter settle-keys-scripts run usdc-direct",
+    "near:agent": "pnpm --filter settle-keys-scripts run agent",
+    "near:demo": "pnpm --filter settle-keys-scripts run demo",
+    "test:contract": "cd contract && cargo test"
+  }
+}

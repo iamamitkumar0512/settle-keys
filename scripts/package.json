@@ -1,0 +1,26 @@
+{
+  "name": "settle-keys-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Command-line steps for Settle Keys on NEAR testnet: issue keys, pay, refuse, remove.",
+  "scripts": {
+    "setup": "tsx src/setup.ts",
+    "member": "tsx src/member.ts",
+    "pay": "tsx src/pay.ts",
+    "remove": "tsx src/remove.ts",
+    "ledger": "tsx src/ledger.ts",
+    "usdc-direct": "tsx src/usdc-direct.ts",
+    "agent": "tsx src/agent.ts",
+    "demo": "tsx src/demo.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "near-api-js": "7.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}
