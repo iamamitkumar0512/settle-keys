@@ -4,6 +4,7 @@
 //! manages the access keys of its members. Every member signs for the company account,
 //! so a member is identified by the key that signed, not by an account.
 
+mod keys;
 mod types;
 
 use near_sdk::json_types::{U64, U128};
