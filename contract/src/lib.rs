@@ -5,6 +5,7 @@
 //! so a member is identified by the key that signed, not by an account.
 
 mod keys;
+mod pay;
 mod types;
 
 use near_sdk::json_types::{U64, U128};
