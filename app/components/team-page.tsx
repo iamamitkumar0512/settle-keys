@@ -105,11 +105,18 @@ function Members({
   onChanged: () => void;
 }) {
   const [busy, setBusy] = useState<string | null>(null);
+  const [arming, setArming] = useState<string | null>(null);
   const [last, setLast] = useState<{ title: string; outcome: Outcome } | null>(null);
 
+  // Two clicks to remove: the first arms the button for a few seconds, the second removes.
   async function remove(m: MemberView) {
     if (!owner) return;
-    if (!confirm(`Remove ${m.name}? The company account deletes their key and they can never pay again.`)) return;
+    if (arming !== m.key) {
+      setArming(m.key);
+      setTimeout(() => setArming((a) => (a === m.key ? null : a)), 5000);
+      return;
+    }
+    setArming(null);
     setBusy(m.key);
     const outcome = await call(signerFor(companyId, owner.private_key), companyId, "remove_member", { key: m.key }, 30);
     setLast({ title: `Remove ${m.name}`, outcome });
@@ -148,8 +155,13 @@ function Members({
               </td>
               <td>
                 {owner && !m.root && m.key !== owner.public_key && (
-                  <button type="button" className="btn h-9 min-h-0 px-3 text-[13px]" disabled={busy === m.key} onClick={() => remove(m)}>
-                    {busy === m.key ? "Removing…" : "Remove"}
+                  <button
+                    type="button"
+                    className={`btn h-9 min-h-0 px-3 text-[13px] ${arming === m.key ? "border-late text-late" : ""}`}
+                    disabled={busy === m.key}
+                    onClick={() => remove(m)}
+                  >
+                    {busy === m.key ? "Removing…" : arming === m.key ? `Remove ${m.name}?` : "Remove"}
                   </button>
                 )}
               </td>
