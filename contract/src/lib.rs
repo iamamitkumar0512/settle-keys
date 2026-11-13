@@ -6,11 +6,13 @@
 
 mod keys;
 mod pay;
+#[cfg(test)]
+mod tests;
 mod types;
 
 use near_sdk::json_types::{U64, U128};
 use near_sdk::store::{IterableMap, LookupSet, Vector};
-use near_sdk::{env, near, AccountId, BorshStorageKey, PanicOnDefault, PublicKey};
+use near_sdk::{AccountId, BorshStorageKey, PanicOnDefault, PublicKey, env, near};
 
 pub use types::*;
 
@@ -79,7 +81,9 @@ impl Contract {
     /// One key, or nothing if the company never issued it.
     pub fn get_member(&self, key: PublicKey) -> Option<MemberView> {
         let today = Self::today();
-        self.members.get(&key).map(|m| Self::view_of(&key, m, today))
+        self.members
+            .get(&key)
+            .map(|m| Self::view_of(&key, m, today))
     }
 
     /// What a key has paid today, zero if the company never issued it.
@@ -95,7 +99,12 @@ impl Contract {
     pub fn get_ledger(&self, from: Option<u64>, limit: Option<u64>) -> Vec<Entry> {
         let from = from.unwrap_or(0) as u32;
         let limit = limit.unwrap_or(50) as u32;
-        self.ledger.iter().skip(from as usize).take(limit as usize).cloned().collect()
+        self.ledger
+            .iter()
+            .skip(from as usize)
+            .take(limit as usize)
+            .cloned()
+            .collect()
     }
 
     /// How many ledger lines exist.
@@ -114,7 +123,11 @@ impl Contract {
             role: m.role.clone(),
             root: m.root,
             policy: m.policy.clone(),
-            spent_today: if m.spent_day == today { m.spent_today } else { U128(0) },
+            spent_today: if m.spent_day == today {
+                m.spent_today
+            } else {
+                U128(0)
+            },
             added_at: m.added_at,
         }
     }
