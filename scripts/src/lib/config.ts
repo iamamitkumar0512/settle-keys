@@ -33,6 +33,9 @@ export const SUPPLIER = process.env.SUPPLIER ?? "milk-supplier.settlekeys.testne
 
 export const ONE_USDC = 1_000_000n;
 
+/** The hosted app, which mints a fresh demo key per run. Override with DEMO_URL=... */
+export const DEMO_URL = process.env.DEMO_URL ?? "https://settle-keys.vercel.app";
+
 export function txUrl(hash: string): string {
   return `${EXPLORER}/txns/${hash}`;
 }
