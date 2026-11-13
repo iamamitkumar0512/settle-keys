@@ -21,3 +21,5 @@ docs/research.md
 
 # The built contract, so a judge can set up a company without a Rust toolchain
 !contract/res/settle_keys.wasm
+next-env.d.ts
+*.tsbuildinfo
