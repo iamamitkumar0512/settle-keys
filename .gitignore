@@ -1,0 +1,20 @@
+node_modules/
+.env
+.env.*
+!.env.example
+target/
+dist/
+.next/
+*.wasm
+.DS_Store
+*.log
+.vercel/
+keys/
+*.key
+*-key.json
+
+# Local planning and session context, never pushed
+CLAUDE.md
+NEAR-PLAN.md
+docs/research.md
+.claude/
