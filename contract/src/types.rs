@@ -1,7 +1,7 @@
 //! The records the contract keeps: members, their policies, and the ledger.
 
 use near_sdk::json_types::{U64, U128};
-use near_sdk::{near, AccountId, PublicKey};
+use near_sdk::{AccountId, PublicKey, near};
 
 /// One USDC, in the token's smallest unit (6 decimals).
 pub const ONE_USDC: u128 = 1_000_000;

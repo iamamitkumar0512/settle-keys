@@ -2,7 +2,7 @@
 //! from inside the contract, so the owner's daily key never needs full access.
 
 use near_sdk::json_types::{U64, U128};
-use near_sdk::{env, near, require, Allowance, Gas, NearToken, Promise, PromiseError, PublicKey};
+use near_sdk::{Allowance, Gas, NearToken, Promise, PromiseError, PublicKey, env, near, require};
 
 use crate::{Contract, ContractExt, Member, Policy, Role};
 
@@ -28,8 +28,14 @@ impl Contract {
     /// it pay only within the policy.
     pub fn add_member(&mut self, key: PublicKey, name: String, policy: Policy) -> Promise {
         self.require_owner();
-        require!(!policy.suppliers.is_empty(), "a member key needs at least one supplier");
-        require!(policy.per_payment.0 > 0, "the per-payment limit must be above zero");
+        require!(
+            !policy.suppliers.is_empty(),
+            "a member key needs at least one supplier"
+        );
+        require!(
+            policy.per_payment.0 > 0,
+            "the per-payment limit must be above zero"
+        );
         require!(
             policy.per_day.0 >= policy.per_payment.0,
             "the daily limit cannot be below the per-payment limit"
@@ -78,7 +84,10 @@ impl Contract {
     }
 
     fn insert_member(&mut self, key: PublicKey, name: String, role: Role, policy: Option<Policy>) {
-        require!(self.members.get(&key).is_none(), "this key was already issued");
+        require!(
+            self.members.get(&key).is_none(),
+            "this key was already issued"
+        );
         require!(!name.trim().is_empty(), "a member needs a name");
         self.members.insert(
             key,

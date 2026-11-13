@@ -4,10 +4,10 @@
 use near_sdk::json_types::{U64, U128};
 use near_sdk::serde_json::json;
 use near_sdk::{
-    env, log, near, require, AccountId, Gas, NearToken, Promise, PromiseError, PublicKey,
+    AccountId, Gas, NearToken, Promise, PromiseError, PublicKey, env, log, near, require,
 };
 
-use crate::{fmt_usdc, Contract, ContractExt, Entry, Role, Status, NANOS_PER_DAY};
+use crate::{Contract, ContractExt, Entry, NANOS_PER_DAY, Role, Status, fmt_usdc};
 
 /// What a NEP-145 token asks for to register an account. Refunded if already registered.
 const STORAGE_DEPOSIT: NearToken = NearToken::from_yoctonear(1_250_000_000_000_000_000_000);
@@ -43,7 +43,10 @@ impl Contract {
         if let Some(expires_at) = policy.expires_at {
             require!(
                 now < expires_at.0,
-                format!("this key expired at unix second {}", expires_at.0 / 1_000_000_000)
+                format!(
+                    "this key expired at unix second {}",
+                    expires_at.0 / 1_000_000_000
+                )
             );
         }
         require!(
@@ -60,7 +63,11 @@ impl Contract {
             )
         );
         let today = now / NANOS_PER_DAY;
-        let spent = if member.spent_day == today { member.spent_today.0 } else { 0 };
+        let spent = if member.spent_day == today {
+            member.spent_today.0
+        } else {
+            0
+        };
         require!(
             spent + amount.0 <= policy.per_day.0,
             format!(
@@ -71,7 +78,10 @@ impl Contract {
             )
         );
         require!(!memo.trim().is_empty(), "a payment needs a memo");
-        require!(!self.memos.contains(&memo), format!("memo {memo} was already paid"));
+        require!(
+            !self.memos.contains(&memo),
+            format!("memo {memo} was already paid")
+        );
 
         // Reserve before anything leaves, so a second call in the same block sees it.
         member.spent_day = today;
@@ -128,7 +138,11 @@ impl Contract {
             .get(id as u32)
             .cloned()
             .unwrap_or_else(|| env::panic_str("unknown ledger entry"));
-        let status = if result.is_ok() { Status::Paid } else { Status::Failed };
+        let status = if result.is_ok() {
+            Status::Paid
+        } else {
+            Status::Failed
+        };
         if status == Status::Failed {
             if let Some(mut member) = self.members.get(&key).cloned() {
                 member.spent_today = U128(member.spent_today.0.saturating_sub(amount.0));
