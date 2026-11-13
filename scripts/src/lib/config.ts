@@ -1,6 +1,7 @@
 // Where things live on NEAR testnet, and how the scripts find keys.
 
 import { homedir } from "node:os";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export const RPC_URL = process.env.NEAR_RPC_URL ?? "https://rpc.testnet.near.org";
@@ -11,15 +12,26 @@ export const CIRCLE_USDC = "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520
 /** A test USDC on NEAR testnet (NEP-141, 6 decimals) with an open `mint`, so no faucet is needed. */
 export const TEST_USDC = "usdc.fakes.testnet";
 
-/** The company the scripts act on. Override with COMPANY=... */
-export const COMPANY = process.env.COMPANY ?? "chaipoint.settlekeys.testnet";
+/** Keys live outside the repo: one folder per company, one JSON file per member. */
+export const KEYS_DIR = process.env.SETTLE_KEYS_DIR ?? join(homedir(), ".near-credentials", "settlekeys");
+
+/** `setup` writes the company it made here, so the other commands need no flags. */
+export const CURRENT_FILE = join(KEYS_DIR, "current");
+
+function currentCompany(): string | undefined {
+  try {
+    return readFileSync(CURRENT_FILE, "utf8").trim() || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** The company the scripts act on: COMPANY=..., else the last `setup`, else the demo company. */
+export const COMPANY = process.env.COMPANY ?? currentCompany() ?? "chaipoint.settlekeys.testnet";
 /** The supplier the demo pays. Override with SUPPLIER=... */
 export const SUPPLIER = process.env.SUPPLIER ?? "milk-supplier.settlekeys.testnet";
 
 export const ONE_USDC = 1_000_000n;
-
-/** Keys live outside the repo: one folder per company, one JSON file per member. */
-export const KEYS_DIR = process.env.SETTLE_KEYS_DIR ?? join(homedir(), ".near-credentials", "settlekeys");
 
 export function txUrl(hash: string): string {
   return `${EXPLORER}/txns/${hash}`;
