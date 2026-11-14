@@ -1,5 +1,6 @@
-// GET /api/cron/cleanup: remove demo keys that have expired. Vercel calls it on a schedule
-// with the CRON_SECRET; anyone else gets 401.
+// GET /api/cron/cleanup: remove demo keys that have expired. Vercel calls it once a day (the free
+// plan's limit) with the CRON_SECRET; anyone else gets 401. Expired keys cannot pay anyway: the
+// contract refuses them. This only tidies the member list.
 
 import { DEMO_COMPANY, asOwner, view } from "@/lib/demo";
 
