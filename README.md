@@ -253,8 +253,11 @@ This repository holds only the NEAR work, written 13 and 14 November 2026 during
 The baseline product is [Settle](https://github.com/iamamitkumar0512/settle), a USDT payment
 gateway on Whitechain built for ETHGlobal Mumbai the week before: invoices, pay links,
 subscriptions, a relayer. The app here reuses Settle's stylesheet and logo; nothing else is shared.
-Libraries: near-sdk 5, near-api-js 7, Next.js 16, React 19, Tailwind 4. The code was written with
-an AI coding assistant and reviewed and committed by the author.
+Libraries: near-sdk 5, near-api-js 7, Next.js 16, React 19, Tailwind 4.
+
+Designed, directed and shipped by Amit Kumar during the hackathon: the product, the key model, every
+decision, the testing on testnet, the deployment and the demo. AI coding tools helped write the code
+under his direction, and every piece was run live before it was committed.
 
 Tracks: Real-World Money. Also AI Security & Defense (a function-call key limited to one contract,
 with its limits explained above) and Social Money (the same account works for a friend group, each
